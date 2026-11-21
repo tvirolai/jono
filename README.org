@@ -1,0 +1,17 @@
+* Jono
+
+A play queue in Org mode. Stream music and video from Youtube from your Org buffer. Powered by [[https://mpv.io][mpv]].
+
+* Install
+
+* Usage
+
+* Settings
+
+* License
+
+* Contributing
+
+** LLM policy
+
+Generative AI is not used for developing this project. Its dependencies might be.
