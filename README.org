@@ -1,9 +1,9 @@
 * Jono
 
-#+CAPTION: A queue outside Helsinki bus station before Palm Sunday 31.3.1942. Copyright: Museovirasto / Finnish Heritage Agency
 #+ATTR_HTML: :width 300px
 #+ATTR_HTML: :align center
-[[[[./resources/image.jpg]]]]
+#+CAPTION[A queue]: A queue outside Helsinki bus station before Palm Sunday 31.3.1942. Copyright: Museovirasto / Finnish Heritage Agency
+[[./resources/image.jpg]]
 
 Manage and stream your playlists locally in Org mode.
 
