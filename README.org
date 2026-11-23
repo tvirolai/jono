@@ -5,12 +5,13 @@
 #+CAPTION: A queue outside Helsinki bus station before Palm Sunday 31.3.1942. Copyright: Museovirasto / Finnish Heritage Agency
 #+NAME: mainimage
 [[./resources/image.jpg]]
+/Image from the [[https://finna.fi/Record/museovirasto.acdc6b51-84ad-40f4-8a57-8a58685fa00a?sid=5773269973&lng=en-gb][Finnish Heritage Agency]] (Museovirasto)./
 
 Manage and stream your playlists locally in Org mode.
 
 A local queue for playing music / video, or other processes. Powered by [[https://mpv.io][mpv]].
 
-The impetus for Jono was to replicate the play queue functionality familiar from music streaming services, enabling playing and enqueuing tracks from Org mode buffers. With Jono, playlists can be managed locally and be version controlled.
+The impetus for Jono was to replicate the play queue functionality familiar from music streaming services, enabling playing and enqueuing tracks from Org mode buffers. With Jono, playlists can be managed off-line and be version controlled.
 
 Features [1/11]:
 - [X] stream content from Youtube as audio or video
@@ -27,7 +28,7 @@ Features [1/11]:
 
 * Status
 
-Jono is currently in pre-alpha stage.
+Jono is currently in pre-alpha stage, a work in progress.
 
 * Install
 
