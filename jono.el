@@ -70,10 +70,11 @@
                                               (let ((finished-signal "finished\n"))
                                                 (message event)
                                                 (when (string= finished-signal event)
-                                                  (let ((next (car jono--queue)))
-                                                    (message "Playing the next one")
-                                                    (setq jono--queue (cdr jono--queue))
-                                                    (jono-start-playback next)))))))))
+                                                  (when jono--queue
+                                                    (let ((next (car jono--queue)))
+                                                      (message "Playing the next one")
+                                                      (setq jono--queue (cdr jono--queue))
+                                                      (jono-start-playback next))))))))))
 
 (defvar test-url
   "https://youtube.com/watch?v=jW-S5tnA3aw")
