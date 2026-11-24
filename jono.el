@@ -52,29 +52,41 @@
 
 (defconst jono--process-name "jono-playback")
 
-(defun jono-start-playback (url)
-  "Start playback for URL."
+(defun jono-process-active-p ()
+  "Check whether the process is active."
   (let ((status (process-status jono--process-name)))
-    (when (memq status '(run stop))
-      (kill-process jono--process-name))
-    (let* ((buffer (get-buffer-create jono-buffer))
-           (cmd (cons jono-command jono-command-args))
-           (fullcmd (append cmd (cons url '()))))
-      (with-current-buffer buffer
-        (comint-mode))
-      (setq jono--process (make-process :name jono--process-name
-                                        :buffer "*Jono*"
-                                        :command fullcmd
-                                        :filter #'comint-output-filter))
-      (set-process-sentinel jono--process #'(lambda (process event)
-                                              (let ((finished-signal "finished\n"))
-                                                (message event)
-                                                (when (string= finished-signal event)
-                                                  (when jono--queue
-                                                    (let ((next (car jono--queue)))
-                                                      (message "Playing the next one")
-                                                      (setq jono--queue (cdr jono--queue))
-                                                      (jono-start-playback next))))))))))
+    (memq status '(run stop))))
+
+(defun jono-stop ()
+  "Stop playback."
+  (interactive)
+  (when (jono-process-active-p)
+    (kill-process jono--process)))
+
+(defun jono-start-playback ()
+  "Start playback for URL."
+  (let ((url (car jono--queue)))
+    (when url
+      (jono-stop)
+      (setq jono--queue (cdr jono--queue))
+      (let* ((buffer (get-buffer-create jono-buffer))
+             (cmd (cons jono-command jono-command-args))
+             (fullcmd (append cmd (cons url '()))))
+        (with-current-buffer buffer
+          (comint-mode))
+        (setq jono--process (make-process :name jono--process-name
+                                          :buffer "*Jono*"
+                                          :command fullcmd
+                                          :filter #'comint-output-filter))
+        (set-process-sentinel jono--process #'(lambda (process event)
+                                                (let ((finished-signal "finished\n"))
+                                                  (message event)
+                                                  (when (string= finished-signal event)
+                                                    (when jono--queue
+                                                      (let ((next (car jono--queue)))
+                                                        (message "Playing the next one")
+                                                        (setq jono--queue (cdr jono--queue))
+                                                        (jono-start-playback)))))))))))
 
 (defvar test-url
   "https://youtube.com/watch?v=jW-S5tnA3aw")
@@ -82,20 +94,34 @@
 (defvar test-url-short
   "https://youtube.com/watch?v=_-ywSPWu3K8")
 
-(setq jono--queue (cons test-url '()))
+(defvar test-url-short-2
+  "https://youtube.com/watch?v=R9YvieGZwWk")
 
-(defun testaa ()
+(setq jono--queue (cons test-url-short-2 '()))
+
+(defun jono-play (&optional url)
   (interactive)
-  (message "Let's play")
-  (jono-start-playback test-url-short))
+  (message (format "%d" (length jono--queue)))
+  (let ((url (or url (read-and-return-yt-url))))
+    (setq jono--queue (append jono--queue (cons url '())))
+    (jono-start-playback)))
 
-(defun jono-play ())
+(defun jono-add-to-queue (&optional url)
+  "Add URL to the end of the queue."
+  (interactive)
+  (let ((url (or url (read-and-return-yt-url))))
+    (setq jono--queue (append jono--queue (cons url '())))))
 
-(defun jono-stop ())
+(defun jono-play-next (&optional url)
+  "Add URL to the top of the queue."
+  (interactive)
+  (let ((url (or url (read-and-return-yt-url))))
+    (cons jono--queue url)))
 
-(defun jono-add-to-queue ())
-
-(defun jono-play-next ())
+(defun jono-next ()
+  "Jump to next in queue."
+  (interactive)
+  (jono-start-playback))
 
 (provide 'jono)
 
